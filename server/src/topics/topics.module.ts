@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TopicsController } from './topics.controller';
 import { TopicsService } from './topics.service';
+import { TopicsController } from './topics.controller';
+import { PrismaService } from '../prisma.service';
 
 @Module({
+  providers: [TopicsService, PrismaService],
   controllers: [TopicsController],
-  providers: [TopicsService]
 })
 export class TopicsModule {}
