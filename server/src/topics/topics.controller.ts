@@ -2,14 +2,20 @@ import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Request } f
 import { TopicsService } from './topics.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
+// DTOs
+import { CreateTopicDto } from './dto/createTopic.dto';
+import { UpdateTopicDto, ParamUpdateTopicDto } from './dto/updateTopic.dto';
+import { ParamDeleteTopicDto } from './dto/deleteTopic.dto';
+import { UpdateConfidenceScoreDto, ParamUpdateConfidenceScoreDto } from './dto/updateConfidenceScore.dto';
+
 @Controller('topics')
 @UseGuards(JwtAuthGuard)
 export class TopicsController {
   constructor(private topicsService: TopicsService) {}
 
   @Post()
-  async createTopic(@Request() req, @Body() body: { name: string; parentId?: number }) {
-    return this.topicsService.createTopic(body.name, req.user.userId, body.parentId);
+  async createTopic(@Request() req, @Body() dto: CreateTopicDto) {
+    return this.topicsService.createTopic(dto.name, req.user.userId, dto.parentId);
   }
 
   @Get()
@@ -18,18 +24,18 @@ export class TopicsController {
   }
 
   @Put(':id')
-  async updateTopic(@Param('id') id: string, @Body() body: { name: string; parentId?: number }) {
-    return this.topicsService.updateTopic(parseInt(id), body.name, body.parentId);
+  async updateTopic(@Param('id') paramDto: ParamUpdateTopicDto, @Body() dto: UpdateTopicDto) {
+    return this.topicsService.updateTopic(parseInt(paramDto.id), dto.name, dto.parentId);
   }
 
   @Delete(':id')
-  async deleteTopic(@Param('id') id: string) {
-    return this.topicsService.deleteTopic(parseInt(id));
+  async deleteTopic(@Param('id') paramDto: ParamDeleteTopicDto) {
+    return this.topicsService.deleteTopic(parseInt(paramDto.id));
   }
 
   @Put(':id/confidence')
-  async updateConfidenceScore(@Param('id') id: string, @Body() body: { confidenceScore: number }) {
-    return this.topicsService.updateConfidenceScore(parseInt(id), body.confidenceScore);
+  async updateConfidenceScore(@Param('id') paramDto: ParamUpdateConfidenceScoreDto, @Body() dto: UpdateConfidenceScoreDto) {
+    return this.topicsService.updateConfidenceScore(parseInt(paramDto.id), dto.confidenceScore);
   }
 }
 
