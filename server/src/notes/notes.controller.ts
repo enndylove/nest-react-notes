@@ -25,19 +25,19 @@ export class NotesController {
     return this.notesService.getNotes(req.user.userId, dto.topicId ? parseInt(dto.topicId) : undefined);
   }
 
-  @Put(':id')
-  async updateNote(@Param('id') paramDto: ParamUpdateNoteDto, @Body() dto: UpdateNoteDto) {
-    return this.notesService.updateNote(parseInt(paramDto.id), dto.title, dto.content);
+  @Put()
+  async updateNote(@Query('id') id: string, @Body() dto: UpdateNoteDto) {
+    return this.notesService.updateNote(parseInt(id), dto.title, dto.content);
   }
 
-  @Delete(':id')
-  async deleteNote(@Param('id') paramDto: DeleteNoteDto) {
-    return this.notesService.deleteNote(parseInt(paramDto.id));
+  @Delete()
+  async deleteNote(@Query('id') id: string) {
+    return this.notesService.deleteNote(parseInt(id));
   }
 
-  @Put(':id/move')
-  async moveNote(@Param('id') paramDto: ParamMoveNoteDto, @Body() dto: MoveNoteDto) {
-    return this.notesService.moveNote(parseInt(paramDto.id), dto.newTopicId);
+  @Put('move')
+  async moveNote(@Query('id') id: string, @Body() dto: MoveNoteDto) {
+    return this.notesService.moveNote(parseInt(id), dto.newTopicId);
   }
 }
 
