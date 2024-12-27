@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Request, Query } from '@nestjs/common';
 import { TopicsService } from './topics.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
@@ -23,19 +23,19 @@ export class TopicsController {
     return this.topicsService.getTopics(req.user.userId);
   }
 
-  @Put(':id')
-  async updateTopic(@Param('id') paramDto: ParamUpdateTopicDto, @Body() dto: UpdateTopicDto) {
-    return this.topicsService.updateTopic(parseInt(paramDto.id), dto.name, dto.parentId);
+  @Put()
+  async updateTopic(@Query('id') id: string, @Body() dto: UpdateTopicDto) {
+    return this.topicsService.updateTopic(parseInt(id), dto.name, dto.parentId);
   }
 
-  @Delete(':id')
-  async deleteTopic(@Param('id') paramDto: ParamDeleteTopicDto) {
-    return this.topicsService.deleteTopic(parseInt(paramDto.id));
+  @Delete()
+  async deleteTopic(@Query('id') id: string) {
+    return this.topicsService.deleteTopic(parseInt(id));
   }
 
-  @Put(':id/confidence')
-  async updateConfidenceScore(@Param('id') paramDto: ParamUpdateConfidenceScoreDto, @Body() dto: UpdateConfidenceScoreDto) {
-    return this.topicsService.updateConfidenceScore(parseInt(paramDto.id), dto.confidenceScore);
+  @Put('confidence')
+  async updateConfidenceScore(@Query('id') id: string, @Body() dto: UpdateConfidenceScoreDto) {
+    return this.topicsService.updateConfidenceScore(parseInt(id), dto.confidenceScore);
   }
 }
 
